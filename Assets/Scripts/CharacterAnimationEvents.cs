@@ -11,13 +11,21 @@ public class CharacterAnimationEvents : MonoBehaviour
         character = GetComponentInParent<Character>();
     }
 
-    void ShootEnd()
+    void ShootEnded()
     {
+        character.Ammo--;
+        character.target.Damage(2);
         character.SetState(Character.State.Idle);
     }
 
     void AttackEnd()
     {
+        character.target.Damage(1);
         character.SetState(Character.State.RunningFromEnemy);
+    }
+
+    void Dying()
+    {
+        character.SetState(Character.State.Dead);
     }
 }
