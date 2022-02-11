@@ -16863,8 +16863,8 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.46666667
-    functionName: ShootEnded
+  - time: 1
+    functionName: Shooted
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
