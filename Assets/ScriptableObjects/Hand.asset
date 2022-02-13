@@ -15,4 +15,5 @@ MonoBehaviour:
   UsesAmmo: 0
   Damage: 1
   MaxDistance: 1
-  Type: 2
+  Type: 0
+  Model: {fileID: 0}

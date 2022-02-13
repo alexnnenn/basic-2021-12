@@ -5,69 +5,53 @@ namespace Assets.Scripts
 {
     internal class AnimationControlComponent : MonoBehaviour
     {
+        private static readonly int IsDeadKey = Animator.StringToHash("IsDead");
+        private static readonly int IsAngryKey = Animator.StringToHash("IsAngry");
+        private static readonly int RunningKey = Animator.StringToHash("Running");
+        private static readonly int ShootKey = Animator.StringToHash("Shoot");
+        private static readonly int DeathKey = Animator.StringToHash("Death");
+        private static readonly int HandStrikeKey = Animator.StringToHash("HandStrike");
+        private static readonly int BatStrikeKey = Animator.StringToHash("BatStrike");
+
         public bool IsAngry;
         public bool IsDead;
-        public bool HasPistol;
 
         private Animator _animator;
-        private PistolMarker _pistol;
+
+        public bool HasPistol { get; internal set; }
 
         void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
-            _pistol = GetComponentInChildren<PistolMarker>();
         }
 
         private void Update()
         {
-            _animator.SetBool("IsDead", IsDead);
-            if (_pistol != null)
-            {
-                _pistol.gameObject.SetActive(HasPistol);
-            }
-            _animator.SetBool("IsAngry", IsAngry);   
+            _animator.SetBool(IsDeadKey, IsDead);
+            _animator.SetBool(IsAngryKey, IsAngry);   
         }
 
         public event Action AttackAnimationEnded;
         public event Action DeathAnimationEnded;
 
-        internal void Stop() => _animator.SetBool("Running", false);
+        internal void Stop() => _animator.SetBool(RunningKey, false);
 
-        internal void Run() => _animator.SetBool("Running", true);
+        internal void Run() => _animator.SetBool(RunningKey, true);
 
-        internal void Shoot() => _animator.SetTrigger("Shoot");
+        internal void Shoot() => _animator.SetTrigger(ShootKey);
 
-        internal void Die() => _animator.SetTrigger("Death");
+        internal void Die() => _animator.SetTrigger(DeathKey);
 
-        internal void HandStrike() => _animator.SetTrigger("HandStrike");
+        internal void HandStrike() => _animator.SetTrigger(HandStrikeKey);
 
-        internal void BatStrike() => _animator.SetTrigger("BatStrike");
+        internal void MeleeStrike() => _animator.SetTrigger(BatStrikeKey);
 
-        private void Shooted()
-        {
-            AttackAnimationEnded?.Invoke();
-            /*character.Ammo--;
-            character.target.Damage(2);
-            character.SetState(CharacterComponent.State.Idle);*/
-        }
+        private void Shooted() => AttackAnimationEnded?.Invoke();
 
-        private void BatStriked()
-        {
-            AttackAnimationEnded?.Invoke();
-            //AttackAnimationEnded?.Invoke();
-            /*character.target.Damage(1);
-            character.SetState(CharacterComponent.State.RunningFromEnemy);*/
-        }
+        private void BatStriked() => AttackAnimationEnded?.Invoke();
 
-        private void HandStriked()
-        {
-            AttackAnimationEnded?.Invoke();
-        }
+        private void HandStriked() => AttackAnimationEnded?.Invoke();
 
-        private void Dying()
-        {
-            DeathAnimationEnded?.Invoke();
-            //character.SetState(CharacterComponent.State.Dead);
-        }
+        private void Dying() => DeathAnimationEnded?.Invoke();
     }
 }

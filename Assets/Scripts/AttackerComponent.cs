@@ -1,34 +1,26 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     internal class AttackerComponent : MonoBehaviour
     {
-        [SerializeReference]
-        private Weapon _attackWeapon;
+        private Weapon _lastWeapon;
+        private CharacterComponent _char;
+        private AnimationControlComponent _animator;
 
         [SerializeField]
         private int _ammo;
-
-        public bool CanBeUsed => _attackWeapon != null && (!_attackWeapon.UsesAmmo || Ammo > 0);
-
-        internal float AttackDistance => _attackWeapon.MaxDistance;
-
-        internal int AttackDamage => _attackWeapon.Damage;
-
         internal int Ammo
         {
             get => _ammo;
             set => _ammo = Mathf.Max(0, value);
         }
 
-        private AnimationControlComponent _animator;
         private void Awake()
         {
+            _char = GetComponent<CharacterComponent>();
             _animator = GetComponentInChildren<AnimationControlComponent>();
-            _animator.HasPistol = _attackWeapon.UsesAmmo && Ammo > 0;
             _animator.AttackAnimationEnded += OnAttackAnimationEnded;
         }
 
@@ -38,27 +30,34 @@ namespace Assets.Scripts
         internal IEnumerator Attack(CharacterComponent target)
         {
             _attackEnded = false;
-            switch (_attackWeapon.Type)
+            switch (_lastWeapon)
             {
-                case WeaponType.Bat:
-                    _animator.BatStrike();
+                case { Type : WeaponType.Melee }:
+                    _animator.MeleeStrike();
                     break;
-                case WeaponType.Pistol when _ammo > 0:
+                case { Type: WeaponType.Projectile } when _ammo > 0 || !_lastWeapon.UsesAmmo:
                     _animator.Shoot();
-                    _ammo--;
+                    if(_lastWeapon.UsesAmmo)
+                        _ammo--;
                     break;
                 default:
                     _animator.HandStrike();
                     break;
             }
             yield return new WaitUntil(() => _attackEnded);
-            _animator.HasPistol = _ammo > 0;
-            target.Health.ReceiveDamage(AttackDamage);
+            target.Life.ReceiveDamage(_lastWeapon.Damage);
             yield return new WaitForFixedUpdate();
         }
 
-        public override string ToString() => $"Attack with {_attackWeapon.Type} for {AttackDamage} pts";
+        internal void Use(Weapon weapon)
+        {
+            if(weapon != _lastWeapon)
+            {
+                _lastWeapon = weapon;
+                _char.Hand.SetWeapon(weapon);
+            }
+        }
 
-        internal void Use() => _animator.HasPistol = _ammo > 0;
+        internal bool CanUse(Weapon weapon) => !weapon.UsesAmmo || _ammo > 0;
     }
 }

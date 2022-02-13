@@ -2,8 +2,10 @@
 {
     public enum WeaponType
     {
-        Pistol,
-        Bat,
-        Hand,
+        NoWeapon,
+
+        Melee,
+
+        Projectile,
     }
 }

@@ -1,19 +1,34 @@
-﻿using System;
+﻿using Assets.Scripts.Logic;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    internal class CharacterComponent : MonoBehaviour
+    internal class CharacterComponent : MonoBehaviour, IActor
     {
-        internal MoveableComponent Movable { get; private set; }
-        internal HealthComponent Health { get; private set; }
-        internal AttackerComponent[] Attacks { get; private set; }
+        private bool? _isAttacker;
+        public bool IsAttacker => (_isAttacker ?? (_isAttacker = Attack != null)) == true;
 
-        void Awake()
+        [SerializeField]
+        private List<Weapon> _weapons;
+
+        internal MoveableComponent Movable { get; private set; }
+        internal HealthComponent Life { get; private set; }
+        internal AttackerComponent Attack { get; private set; }
+        internal IReadOnlyList<Weapon> Weapons => _weapons;
+        internal HandMarker Hand { get; private set; }
+
+        public bool IsDead => Life.IsDead;
+
+        public int Health => Life.Health;
+
+        private void Awake()
         {
             Movable = GetComponent<MoveableComponent>();
-            Health = GetComponent<HealthComponent>();
-            Attacks = GetComponents<AttackerComponent>();
+            Life = GetComponent<HealthComponent>();
+            Attack = GetComponent<AttackerComponent>();
+            Hand = GetComponentInChildren<HandMarker>();
         }
     }
 }

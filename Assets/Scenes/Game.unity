@@ -216,6 +216,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3460107100783766116, guid: 83df4009a06ad0049a64e178518be6dc, type: 3}
+      propertyPath: _weapons.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3460107100783766116, guid: 83df4009a06ad0049a64e178518be6dc, type: 3}
+      propertyPath: _weapons.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: c97107c1fe727a54794565c69502514a, type: 2}
     - target: {fileID: 4555373196753987223, guid: 83df4009a06ad0049a64e178518be6dc, type: 3}
       propertyPath: m_Name
       value: Hooligan 1
@@ -300,6 +308,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2128867988}
     m_Modifications:
+    - target: {fileID: 2973901001310613610, guid: ba11609f2235c4e4f9a5a94cace96335, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3313426551164327183, guid: ba11609f2235c4e4f9a5a94cace96335, type: 3}
       propertyPath: m_Name
       value: Police
@@ -852,6 +864,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3460107100783766116, guid: 83df4009a06ad0049a64e178518be6dc, type: 3}
+      propertyPath: _weapons.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4555373196753987223, guid: 83df4009a06ad0049a64e178518be6dc, type: 3}
       propertyPath: m_Name
       value: Hooligan 2
@@ -1259,6 +1275,7 @@ GameObject:
   - component: {fileID: 1304609966}
   - component: {fileID: 1304609965}
   - component: {fileID: 1304609964}
+  - component: {fileID: 1304609967}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1314,6 +1331,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1304609967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304609963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbc3982d7e26373459b99a513dcf28a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1793111549
 PrefabInstance:
   m_ObjectHideFlags: 0

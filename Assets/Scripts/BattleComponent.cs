@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Assets.Scripts.Logic;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -8,16 +8,35 @@ namespace Assets.Scripts
     internal class BattleComponent : MonoBehaviour
     {
         [SerializeReference]
-        private CharacterComponent[] LeftTeam;
+        private IActor[] PlayerTeam;
 
         [SerializeReference]
-        private CharacterComponent[] RightTeam;
+        private IActor[] ComputerTeam;
 
+        private PlayerMoveComponent _playerMove;
         private UIComponent _ui;
+        private BattleLogic _logic;
 
         private void Awake()
         {
             _ui = GetComponentInChildren<UIComponent>();
+            _playerMove = GetComponent<PlayerMoveComponent>();
+
+            _logic = new BattleLogic();
+            var playerTeamId = _logic.CreateTeam(_playerMove);
+            foreach(var character in PlayerTeam)
+                _logic.AddTeamMember(playerTeamId, character);
+
+            var pcTeamId = _logic.CreateTeam(new ComputerChoosesTarget(PlayerTeam));
+            foreach (var character in ComputerTeam)
+                _logic.AddTeamMember(pcTeamId, character);
+
+            _logic.MoveEvent += OnMoveEvent;
+        }
+
+        private void OnDestroy()
+        {
+            
         }
 
         private void Start()
@@ -28,64 +47,61 @@ namespace Assets.Scripts
         private IEnumerator Battle()
         {
             var roundNumber = 1;
-            var isRightTeamMove = true;
-            while (BothCommandsAlive())
+            while (!_logic.IsEndOfGame)
             {
-                if (isRightTeamMove)
-                    yield return _ui.ShowRound(roundNumber);
+                yield return _ui.ShowRound(roundNumber++);
 
-                var activeTeam = isRightTeamMove ? RightTeam : LeftTeam;
-                var targetsTeam = isRightTeamMove ? LeftTeam : RightTeam;
-
-                var targetsAlive = true;
-                foreach (var activeTeamMember in activeTeam.Where(c => !c.Health.IsDead))
+                foreach (var enemy in ComputerTeam.Where(c => !c.IsDead))
                 {
-                    Debug.Log($"{activeTeamMember} is making his turn");
-                    yield return MakeTurn(activeTeamMember, targetsTeam);
-                    Debug.Log($"{activeTeamMember} ended his turn");
-                    targetsAlive = TeamAlive(targetsTeam);
-                    if (!targetsAlive)
-                        break;
+                    using (new CharacterActivator(enemy))
+                        yield return MakeTurn(enemy);
                 }
 
-                if (!targetsAlive)
-                    break;
-
-                isRightTeamMove = !isRightTeamMove;
-                if (isRightTeamMove)
-                    roundNumber++;
+                foreach (var player in PlayerTeam.Where(c => !c.IsDead))
+                {
+                    using (new CharacterActivator(enemy))
+                        yield return MakeTurn(player);
+                }
             }
         }
 
-        private IEnumerator MakeTurn(CharacterComponent teamMember, CharacterComponent[] enemies)
+        private bool ChooseWeapon(IActor character, out WeaponInfo weapon)
         {
-            var moveable = teamMember.Movable;
-            if (moveable == null || Mathf.Approximately(0f, moveable.Speed))
-            {
-                Debug.LogWarning($"{teamMember} cant move");
-                yield break;
-            }
+            weapon = null;
+            if (!character.IsAttacker)
+                return false;
 
-            var bestAttack = teamMember.Attacks.Where(a => a.CanBeUsed).OrderByDescending(a => a.AttackDamage).FirstOrDefault();
-            if (bestAttack == null)
+            var bestWeapon = character.Weapons
+                .Where(character.Attack.CanUse)
+                .OrderByDescending(weapon => weapon.Damage)
+                .FirstOrDefault();
+            if (bestWeapon == null)
             {
-                Debug.LogWarning($"{teamMember} has no usable attacks");
-                yield break;
+                Debug.LogWarning($"{character} has no usable attacks");
+                return false;
             }
+            weapon = bestWeapon;
+            return true;
+        }
+
+        private IEnumerator MakeTurn(IActor character)
+        {
+            if (!ChooseWeapon(character, out var weapon))
+                yield break;
 
             var target = enemies
-                .Where(e => !e.Health.IsDead)
-                .OrderBy(e => Mathf.Abs(e.Health.Health - bestAttack.AttackDamage))
+                .Where(e => !e.Life.IsDead)
+                .OrderBy(e => Mathf.Abs(e.Life.Health - weapon.Damage))
                 .FirstOrDefault();
 
-            bestAttack.Use();
-            yield return moveable.MoveTo(target.transform.position, bestAttack.AttackDistance);
-            yield return bestAttack.Attack(target);
+            character.Attack.Use(weapon);
+            yield return moveable.MoveTo(target.transform.position, weapon.MaxDistance);
+            yield return character.Attack.Attack(target);
             yield return moveable.ReturnToBase();
         }
 
-        private bool BothCommandsAlive() => TeamAlive(LeftTeam) && TeamAlive(RightTeam);
+        private bool BothCommandsAlive() => TeamAlive(PlayerTeam) && TeamAlive(ComputerTeam);
 
-        private bool TeamAlive(CharacterComponent[] team) => team.Any(c => !c.Health.IsDead);
+        private bool TeamAlive(CharacterComponent[] team) => team.Any(c => !c.Life.IsDead);
     }
 }
