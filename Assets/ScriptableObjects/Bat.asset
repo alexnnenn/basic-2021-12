@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a4f70226a04e74a9eefc083674aac7, type: 3}
   m_Name: Bat
   m_EditorClassIdentifier: 
-  UsesAmmo: 0
-  Damage: 2
-  MaxDistance: 1
-  Type: 1
+  _id: 2
+  Prototype: {fileID: 6221517340523560579, guid: 3056991078035704fadfbe0d50c948d4, type: 3}
+  _localRotationInHand: {x: 0, y: 90, z: 0}
+  _localPositionInHand: {x: -0.05, y: 0, z: 0.05}
+  _martial: 0
+  _projectile: 0
+  _damage: 3
+  _ammoType: {fileID: 0}
+  _distance: 1

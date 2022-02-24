@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a4f70226a04e74a9eefc083674aac7, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
-  UsesAmmo: 1
-  Damage: 5
-  MaxDistance: 4
-  Type: 0
+  _id: 5
+  Prototype: {fileID: 3015280855247016837, guid: 20fa5a3a7bfb01540b0c8d31725f1d04, type: 3}
+  _martial: 0
+  _projectile: 1
+  _damage: 5
+  _ammoType: {fileID: 11400000, guid: df4551cc8bd613a4aab6cd8a8158e5c5, type: 2}
+  _distance: 4
