@@ -16,7 +16,6 @@ namespace Assets.Scripts.Components
 
         private void Awake()
         {
-            Debug.Log($"skills hash={GetHashCode()}");
             _buttons.AddRange(GetComponentsInChildren<PanelUseWeaponButton>());
             foreach (var weapon in _buttons)
             {

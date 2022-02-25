@@ -40,6 +40,10 @@ namespace Assets.Scripts.Logic
                             yield break;
                         }
                     }
+                    if (!IsBattle)
+                    {
+                        yield break;
+                    }
                 }
         }
 
@@ -49,6 +53,7 @@ namespace Assets.Scripts.Logic
             var enemies = _teams
                 .Where(t => t.Id != actor.Team.Id) //своих не бьем
                 .SelectMany(t => t.Members)
+                .Where(a => a.HealthAmount > 0) //трупы не пинаем
                 .ToList();
             ctr.Choose(actor, enemies, callback);
         }

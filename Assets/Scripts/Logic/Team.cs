@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Scripts.Logic
 {
@@ -24,5 +25,7 @@ namespace Assets.Scripts.Logic
             _members.Add(member);
             member.Team = this;
         }
+
+        public bool IsAlive => _members.Any(m => m.HealthAmount > 0);
     }
 }

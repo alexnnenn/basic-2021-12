@@ -1,15 +1,19 @@
 ﻿using Assets.Scripts.Common;
 using Assets.Scripts.Components;
 using Assets.Scripts.Logic;
+using Assets.Scripts.Menus;
 using Assets.Scripts.ScriptableObjectsProtos;
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    internal class BattleOrchestrator : MonoBehaviour
+    internal sealed class BattleOrchestrator : MonoBehaviour
     {
+        [SerializeField]
+        private string _nextLevel;
         [SerializeReference]
         private Character[] LeftTeam;
         [SerializeReference]
@@ -17,7 +21,7 @@ namespace Assets.Scripts
         [SerializeReference]
         private GameSettings Settings;
         private CharacterSelectionSystem _selector;
-        private UIComponent _ui;
+        private RoundNumberComponent _ui;
         private SkillsPanelComponent _skills;
 
         private BattleLogic _logic;
@@ -30,8 +34,7 @@ namespace Assets.Scripts
         {
             _selector = GetComponent<CharacterSelectionSystem>();
             _playerCtr = GetComponent<PlayerTargetChooser>();
-            Debug.Log($"Ctr in orch hash={_playerCtr.GetHashCode()}");
-            _ui = GetComponentInChildren<UIComponent>();
+            _ui = GetComponentInChildren<RoundNumberComponent>();
             _skills = GetComponentInChildren<SkillsPanelComponent>();
             _logic = new BattleLogic();
             _leftTeam = _logic.CreateTeam(CreateController(Settings.LeftControlledBy));
@@ -60,14 +63,14 @@ namespace Assets.Scripts
 
         private void Start()
         {
-            StartCoroutine(Battle());
+            ResetGame();
         }
 
         private IEnumerator Battle()
         {
             var roundNumber = 1;
             var previousTeamId = Guid.Empty;
-            foreach(var actor in _logic.EnumerateActors())
+            foreach (var actor in _logic.EnumerateActors())
             {
                 _skills.SetForActor(actor);
                 var isFirstTeamMove = actor.Team.Id == _firstTeamId && previousTeamId != _firstTeamId;
@@ -90,6 +93,14 @@ namespace Assets.Scripts
                 else
                     yield return MakeTurn(actor, target, weapon);
             }
+            var winner = _leftTeam.IsAlive ? "It's a sound of police..." : "Bomb has been planted...";
+            DialogsController.Instance.Show(
+                DialogType.WinLose,
+                new WinLoseParameters
+                {
+                    Message = winner,
+                    NextSceneName = _nextLevel,
+                });
         }
 
         private IEnumerator MakeTurn(IActor member, IActor target, IWeapon weapon)
@@ -108,6 +119,17 @@ namespace Assets.Scripts
             yield return mc.Attack.Attack(tc);
             _selector.StopSelection();
             yield return mc.Moveable.ReturnToBase();
+        }
+
+        internal void ResetGame()
+        {
+            StopAllCoroutines();
+            _selector.StopSelection();
+            foreach (var c in _leftTeam.Members.OfType<Character>())
+                c.ResetGame();
+            foreach (var c in _rightTeam.Members.OfType<Character>())
+                c.ResetGame();
+            StartCoroutine(Battle());
         }
     }
 }

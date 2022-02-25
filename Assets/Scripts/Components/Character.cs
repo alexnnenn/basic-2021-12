@@ -11,6 +11,7 @@ namespace Assets.Scripts
         internal HealthComponent Health { get; private set; }
         internal AttackerComponent Attack { get; private set; }
         internal InventoryComponent Inventory { get; private set; }
+        internal AnimationControlComponent Animator { get; private set; }
 
         public int HealthAmount => Health?.Health ?? -1;
 
@@ -26,12 +27,20 @@ namespace Assets.Scripts
             ownage.Amount--;
         }
 
-        void Awake()
+        private void Awake()
         {
             Moveable = GetComponent<MoveableComponent>();
             Health = GetComponent<HealthComponent>();
             Attack = GetComponent<AttackerComponent>();
             Inventory = GetComponent<InventoryComponent>();
+            Animator = GetComponentInChildren<AnimationControlComponent>();
+        }
+
+        internal void ResetGame()
+        {
+            Health.ResetGame();
+            Animator.ResetGame();
+            Inventory.ResetGame();
         }
     }
 }

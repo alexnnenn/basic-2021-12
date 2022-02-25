@@ -8,6 +8,7 @@ namespace Assets.Scripts
         internal event Action<int> Changed;
 
         [SerializeField]
+        private int _defaultHealth;
         private int _health;
         internal int Health
         {
@@ -25,6 +26,7 @@ namespace Assets.Scripts
         private void Awake()
         {
             _animator = GetComponentInChildren<AnimationControlComponent>();
+            _health = _defaultHealth;
         }
 
         internal void ReceiveDamage(int damage)
@@ -36,6 +38,11 @@ namespace Assets.Scripts
             }
             else
                 _animator.IsAngry = true;
+        }
+
+        internal void ResetGame()
+        {
+            _health = _defaultHealth;
         }
     }
 }

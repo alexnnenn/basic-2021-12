@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c00aab289a79849884fbaf113a4475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 8
+  _defaultHealth: 8
 --- !u!114 &3978996310728445552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,10 +100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717c6a11e26f47d49befa497038f0a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Items:
+  _defaultItems:
   - Amount: 1
     Type: {fileID: 11400000, guid: 85f7ff0827156a840aad1ade8ebdccc1, type: 2}
-  - Amount: 5
+  - Amount: 3
     Type: {fileID: 11400000, guid: df4551cc8bd613a4aab6cd8a8158e5c5, type: 2}
   - Amount: 1
     Type: {fileID: 11400000, guid: 7dbd7c8c7b1a71a42814ee5454816442, type: 2}

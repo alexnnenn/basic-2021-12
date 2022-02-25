@@ -8,12 +8,11 @@ namespace Assets.Scripts.Menus
     {
         public UnityEngine.UI.Dropdown _leftCombo;
         public UnityEngine.UI.Dropdown _rightCombo;
-        public DialogsComponent _dialogsComponent;
         public GameSettings _settings;
 
         public void OnShownHidden()
         {
-            if (_dialogsComponent.IsShown(DialogType.StartSettings))
+            if (DialogsController.Instance.IsShown(DialogType.StartSettings))
             {
                 _leftCombo.value = (int)_settings.LeftControlledBy;
                 _rightCombo.value = (int)_settings.RightControlledBy;
@@ -32,7 +31,7 @@ namespace Assets.Scripts.Menus
 
         public void OnBackClicked()
         {
-            _dialogsComponent.Show(DialogType.MainMenu);
+            DialogsController.Instance.Show(DialogType.MainMenu);
         }
     }
 }

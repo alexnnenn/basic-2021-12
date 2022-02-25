@@ -77,5 +77,10 @@ namespace Assets.Scripts
                 weaponInstance.transform.localRotation = rotation ?? ZeroRotation;
             }
         }
+
+        internal void ResetGame()
+        {
+           // _animator.Play("idle", -1, 0f);
+        }
     }
 }
