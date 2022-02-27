@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Common;
 using Assets.Scripts.Components;
 using Assets.Scripts.Logic;
+using Assets.Scripts.Managers;
 using Assets.Scripts.Menus;
 using Assets.Scripts.ScriptableObjectsProtos;
 using System;
@@ -32,6 +33,7 @@ namespace Assets.Scripts
 
         private void Awake()
         {
+            AudioManager.Instance.Play(AudioSourceType.Background);
             _selector = GetComponent<CharacterSelectionSystem>();
             _playerCtr = GetComponent<PlayerTargetChooser>();
             _ui = GetComponentInChildren<RoundNumberComponent>();
@@ -64,6 +66,11 @@ namespace Assets.Scripts
         private void Start()
         {
             ResetGame();
+        }
+
+        private void OnDestroy()
+        {
+            AudioManager.Instance.Stop(AudioSourceType.Background);
         }
 
         private IEnumerator Battle()

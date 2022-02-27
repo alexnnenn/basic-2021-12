@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Managers;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -54,11 +55,35 @@ namespace Assets.Scripts
 
         internal void BatStrike() => _animator.SetTrigger("BatStrike");
 
-        private void Shooted() => AttackAnimationEnded?.Invoke();
+        private void Shooted()
+        {
+            AttackAnimationEnded?.Invoke();
+        }
 
-        private void BatStriked() => AttackAnimationEnded?.Invoke();
+        private void BatStriked()
+        {
+            AttackAnimationEnded?.Invoke();
+        }
 
-        private void HandStriked() => AttackAnimationEnded?.Invoke();
+        private void HandStriked()
+        {
+            AttackAnimationEnded?.Invoke();
+        }
+
+        private void Shooting()
+        {
+            AudioManager.Instance.Play(AudioSourceType.Shot);
+        }
+
+        private void BatStriking()
+        {
+            AudioManager.Instance.Play(AudioSourceType.Strike);
+        }
+
+        private void HandStriking()
+        {
+            AudioManager.Instance.Play(AudioSourceType.Strike);
+        }
 
         private void Dying() => DeathAnimationEnded?.Invoke();
 

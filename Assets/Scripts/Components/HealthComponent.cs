@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Scripts.Managers;
+using Assets.Scripts.Menus;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -35,6 +37,7 @@ namespace Assets.Scripts
             if (IsDead)
             {
                 _animator.Die();
+                AudioManager.Instance.Play(AudioSourceType.Death);
             }
             else
                 _animator.IsAngry = true;

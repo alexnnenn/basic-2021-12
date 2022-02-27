@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Logic;
+using Assets.Scripts.Managers;
+using Assets.Scripts.Menus;
 using System.Collections;
 using UnityEngine;
 
