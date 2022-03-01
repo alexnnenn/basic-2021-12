@@ -23,18 +23,21 @@ namespace Assets.Scripts.Menus
 
         public void OnRestartClicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             DialogsController.Instance.Show(DialogType.None);
             TransitionManager.ReloadScene();
         }
 
         public void OnMenuClicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             DialogsController.Instance.Show(DialogType.MainMenu);
             SceneManager.LoadScene("MainMenu");
         }
 
         public void OnNextClicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             DialogsController.Instance.Show(DialogType.None);
             TransitionManager.GoToScene(_next);
         }

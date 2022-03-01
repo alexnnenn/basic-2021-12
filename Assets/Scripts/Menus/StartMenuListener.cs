@@ -7,18 +7,21 @@ namespace Assets.Scripts.Menus
     {
         public void OnLevel1Clicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             DialogsController.Instance.Show(DialogType.None);
             TransitionManager.GoToScene("Level01");
         }
 
         public void OnLevel2Clicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             DialogsController.Instance.Show(DialogType.None);
             TransitionManager.GoToScene("Level02");
         }
 
         public void OnBackClicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             DialogsController.Instance.Show(DialogType.MainMenu);
         }
     }

@@ -101,6 +101,10 @@ namespace Assets.Scripts
                     yield return MakeTurn(actor, target, weapon);
             }
             var winner = _leftTeam.IsAlive ? "It's a sound of police..." : "Bomb has been planted...";
+            var winnerTeam = _leftTeam.IsAlive ? _leftTeam : _rightTeam;
+            AudioManager.Instance.Play(winnerTeam.Controller.IsPC
+                ? AudioSourceType.Win
+                : AudioSourceType.Lose);
             DialogsController.Instance.Show(
                 DialogType.WinLose,
                 new WinLoseParameters

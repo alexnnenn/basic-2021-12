@@ -9,5 +9,11 @@
         Strike,
 
         Death,
+
+        Win,
+
+        Lose,
+
+        Click,
     }
 }

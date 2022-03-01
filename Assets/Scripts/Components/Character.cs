@@ -39,7 +39,6 @@ namespace Assets.Scripts
         internal void ResetGame()
         {
             Health.ResetGame();
-            Animator.ResetGame();
             Inventory.ResetGame();
         }
     }

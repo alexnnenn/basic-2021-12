@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Managers;
-using Assets.Scripts.Menus;
+﻿using Assets.Scripts.Components;
+using Assets.Scripts.Managers;
 using System;
 using UnityEngine;
 
@@ -12,6 +12,10 @@ namespace Assets.Scripts
         [SerializeField]
         private int _defaultHealth;
         private int _health;
+
+        [SerializeField]
+        private BaseEffectComponent _hitEffect;
+
         internal int Health
         {
             get => _health;
@@ -33,6 +37,8 @@ namespace Assets.Scripts
 
         internal void ReceiveDamage(int damage)
         {
+            if (_hitEffect != null)
+                _hitEffect.Play();
             Health -= damage;
             if (IsDead)
             {

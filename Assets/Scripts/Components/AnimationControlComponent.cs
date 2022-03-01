@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Managers;
+﻿using Assets.Scripts.Components;
+using Assets.Scripts.Managers;
 using System;
 using UnityEngine;
 
@@ -72,6 +73,7 @@ namespace Assets.Scripts
 
         private void Shooting()
         {
+            _useEffect.Play();
             AudioManager.Instance.Play(AudioSourceType.Shot);
         }
 
@@ -87,25 +89,25 @@ namespace Assets.Scripts
 
         private void Dying() => DeathAnimationEnded?.Invoke();
 
+        private GameObjectEffectComponent _useEffect;
+
         internal void SetWeapon(GameObject prefab, Quaternion? rotation, Vector3? position)
         {
             if (_weaponContainer.transform.childCount > 0)
             {
+                _useEffect = null;
                 // Убраем предыдущее оружие, если было
                 Destroy(_weaponContainer.transform.GetChild(0).gameObject);
             }
             if (prefab != null)
             {
                 var weaponInstance = Instantiate(prefab);
+                _useEffect = weaponInstance.GetComponentInChildren<GameObjectEffectComponent>();
+
                 weaponInstance.transform.SetParent(_weaponContainer.transform, false);
                 weaponInstance.transform.localPosition = position ?? Vector3.zero;
                 weaponInstance.transform.localRotation = rotation ?? ZeroRotation;
             }
-        }
-
-        internal void ResetGame()
-        {
-           // _animator.Play("idle", -1, 0f);
         }
     }
 }

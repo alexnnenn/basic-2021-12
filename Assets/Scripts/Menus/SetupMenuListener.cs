@@ -1,4 +1,5 @@
 using Assets.Scripts.Common;
+using Assets.Scripts.Managers;
 using Assets.Scripts.ScriptableObjectsProtos;
 using UnityEngine;
 
@@ -31,6 +32,7 @@ namespace Assets.Scripts.Menus
 
         public void OnBackClicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             DialogsController.Instance.Show(DialogType.MainMenu);
         }
     }

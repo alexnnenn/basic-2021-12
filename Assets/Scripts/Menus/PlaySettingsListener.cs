@@ -26,6 +26,7 @@ namespace Assets.Scripts.Menus
 
         public void OnRestartClicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             Time.timeScale = 1f;
             TransitionManager.ReloadScene();
             DialogsController.Instance.Show(DialogType.None);
@@ -33,6 +34,7 @@ namespace Assets.Scripts.Menus
 
         public void OnMenuClicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             Time.timeScale = 1f;
             DialogsController.Instance.Show(DialogType.MainMenu);
             SceneManager.LoadScene("MainMenu");
@@ -40,6 +42,7 @@ namespace Assets.Scripts.Menus
 
         public void OnCloseClicked()
         {
+            AudioManager.Instance.Play(AudioSourceType.Click);
             Time.timeScale = 1f;
             DialogsController.Instance.Show(DialogType.None);
         }
