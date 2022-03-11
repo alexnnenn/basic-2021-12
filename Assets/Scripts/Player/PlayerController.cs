@@ -38,10 +38,6 @@ namespace Assets.Scripts.Player
             }
 
             var spaced = Input.GetKeyDown(KeyCode.Space);
-            if(spaced)
-                Debug.LogWarning($"{_isFootGrounded} {_isLeftGrounded} {_isRightGrounded} {_jumpCounter}");
-            else
-                Debug.Log($"{_isFootGrounded} {_isLeftGrounded} {_isRightGrounded} {_jumpCounter}");
             if (spaced && CanJump())
             {
                 Jump();
