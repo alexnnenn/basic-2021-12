@@ -18,7 +18,7 @@ namespace Assets.Scripts.Player
 
         private int _jumpCounter;
 
-        private void FixedUpdate()
+        private void Update()
         {
             CheckMaxSpeed();
 
@@ -37,7 +37,12 @@ namespace Assets.Scripts.Player
                 Stop();
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && CanJump())
+            var spaced = Input.GetKeyDown(KeyCode.Space);
+            if(spaced)
+                Debug.LogWarning($"{_isFootGrounded} {_isLeftGrounded} {_isRightGrounded} {_jumpCounter}");
+            else
+                Debug.Log($"{_isFootGrounded} {_isLeftGrounded} {_isRightGrounded} {_jumpCounter}");
+            if (spaced && CanJump())
             {
                 Jump();
                 if (!_isFootGrounded)
