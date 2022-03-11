@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Utils;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -17,7 +18,8 @@ namespace Assets.Scripts
             var distanceDiff = way.magnitude - _maxDistance;
             if (distanceDiff > 0)
             {
-                transform.position += (Vector3)way.normalized * distanceDiff;
+                var newPosition = transform.position + (Vector3)way.normalized * distanceDiff;
+                transform.position = newPosition.Quantize();
             }
         }
     }
