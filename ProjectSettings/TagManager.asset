@@ -44,6 +44,9 @@ TagManager:
   - name: Sky
     uniqueID: 676498809
     locked: 0
+  - name: GroundDecor
+    uniqueID: 1994903021
+    locked: 0
   - name: Player
     uniqueID: 2442900447
     locked: 0
